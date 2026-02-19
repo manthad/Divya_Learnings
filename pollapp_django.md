@@ -1,5 +1,5 @@
 First created a project and an app just like we did in the previous video which created existing files and we need to start editing them as per the requirements of our project.
-
+```bash
 arrangement 
  pollapp
     manage.py
@@ -19,12 +19,15 @@ arrangement
         urls.py - manually created
         migrations
             __init__.py
+```
+### views.py: 
+This file contains the logic of our application. It receives requests and returns responses. This is a basic view to open this in browser we need to map this to a url right so now we go to urls.py and edit there
 
-1. views.py: This file contains the logic of our application. It receives requests and returns responses. This is a basic view to open this in browser we need to map this to a url right so now we go to urls.py and edit there
-
-2. The urls.py file should be created inside the polls itself
+### The urls.py
+ file should be created inside the polls itself
 
  🌐 Browser Request (http://127.0.0.1:8000/blog/)
+```bash 
 
         |
         v
@@ -56,7 +59,7 @@ arrangement
 +------------------+
 
 
-big picture
+# big picture
 
      User / Browser
         |
@@ -89,7 +92,7 @@ big picture
 +-------------------+
 |   Final Response  |   <-- Sent back to browser
 +-------------------+
-
+```
 Now run python manage.py runserver we can now see the changes made on the browser when localhost:8000/polls is requested
 
 Now everything is done for now so in the exisiting files few of them uses atleast one database table so lets create them before they try to use it so we need to migrate. we can just use the migrate command eitherwise
@@ -97,14 +100,16 @@ Now everything is done for now so in the exisiting files few of them uses atleas
 If we have provided any specific models data to create certain table then we need to make migrations command and then migrate
 but migrate single also works if no modle provided.
 
-Now lets make few tables for that we need to go to models.py
+#### Now lets make few tables for that we need to go to models.py
 
-=> The code we write in models.py not only used for the creation or updation or anything that is related to the db but also the django admin portal. so smae code is represented and the aliasing names in the code is seen on admin page not in db.
-
+- The code we write in models.py not only used for the creation or updation or anything that is related to the db but also the django admin portal. so smae code is represented and the aliasing names in the code is seen on admin page not in db.
+```bash
   python manage.py sqlmigrate polls 0001
-=> This command shows the sql format of the code that we have written in models.py
+```  
+- This command shows the sql format of the code that we have written in models.py
+
    0001 is the migration file created inside migrations folder
-=> Generally this is just used to check what the django is actually doing in the backend before migrate and make migrations commands. just for our own validations. And this is so better as we dont need to learn sql to create tables and all as it is only doing all the work for us.
+-  Generally this is just used to check what the django is actually doing in the backend before migrate and make migrations commands. just for our own validations. And this is so better as we dont need to learn sql to create tables and all as it is only doing all the work for us.
 
 Shell- there is something caled django shell which can be treated like a runtime interpreter for django, we can write our code and press enter and the result comes. 
 

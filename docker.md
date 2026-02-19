@@ -17,7 +17,7 @@ Before 1950, shipping goods was a nightmare. Flour, cars, and pianos were all pa
 |Term|	Analogy|	Description
 |-----|---|----|
 |Dockerfile|	The Recipe	|A text file with instructions (e.g., "Install Python," "Copy my code").
-|Image|	The Frozen Pizza|	A read-only snapshot built from the recipe. It sits on your disk doing nothing.
+|Image|	The Frozen Pizza|	A read-only snapshot built from the dockerfile. i.e. it reads the file, execute each instuction, creates layers, package into image build command
 |Container|	The Pizza in the Oven|	A living, breathing, running instance of that image.
 
 ## 4. Interview Preparation: Assignments
@@ -28,12 +28,14 @@ If you can do these 3 tasks, you are ready for a Junior DevOps interview.
 - Action: Write a Dockerfile.
 
 Interview Question: "What is the difference between CMD and RUN in a Dockerfile?"
+
 Answer: RUN happens while building the image (installing stuff). CMD happens when the container starts (running the app).
 ### Assignment 2: The Multi-Container Setup
 - Task: Use docker-compose to run a Web App and a Database (like MySQL) together.
 - Action: Ensure the Web App can talk to the Database using its service name, not an IP address.
 
 Interview Question: "How do you make sure the data in your database isn't lost if the container crashes?"
+
 Answer: Use Volumes to link a folder on the host machine to the container's data folder.
 ### Assignment 3: Optimization & Security
 - Task: Build an image and look at its size. Then try to make it smaller using the alpine version of your base image.
