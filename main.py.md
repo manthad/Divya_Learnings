@@ -1,24 +1,25 @@
-
+```bash
 from fastapi import FastAPI    # means from fastapi framework import FastAPI class
 app = FastAPI()              # creating an instance of FastAPI class and assigning it to app variable
-
-# GENERAL FUNCTION:
-
+```
+### GENERAL FUNCTION:
+```bash
 @app.get("/") # that @ is used to link the path below and app.get says it is a get request and "/" is the path
 async def root():  # aysnchronous function named root
     return {"message": "Hello World"} # returns this as response when user opens the localhost url without any path http:127.0.0.1:8000/
-
+```
   
-# PATH PARAMETERS:
+### PATH PARAMETERS:
+```bash
 @app.get("/items/{item_id}")
 # async def read_item(item_id):
 async def read_item(item_id: int):    
     return {"item_id": item_id}    
+```
 
-
-# ORDER 
-# Sometimes the API has to validate data one after other i.e user name and then user id then we need to wrtie the code properly
-
+### ORDER 
+Sometimes the API has to validate data one after other i.e user name and then user id then we need to wrtie the code properly
+```bash
 @app.get("/users/name/{user}")
 async def user_name(user: str):    
     return {"user": user} 
@@ -30,9 +31,10 @@ async def user_id(id: int):
 # Here if i use both as /users/{user} and /user/{id} as for both the path is same it will consider only first one and then not 
 #   validate the second one
 
+```
 
-
-# ENUM
+### ENUM
+```bash
 from enum import Enum
 class ModelName(str, Enum):
     alexnet = "alexnet"
@@ -50,22 +52,23 @@ async def get_model(model_name: ModelName):
 
     return {"model_name": model_name, "message": "Have some residuals"}
 
+```
 
-
-# FILE PATH
-
+### FILE PATH
+```bash
 @app.get("/files/{file_path:path}")
 async def read_file(file_path: str):
     return {"file_path": file_path}
+```
 
+### QUERY PARAMETERS:
 
-# QUERY PARAMETERS:
+- if we are declaring anything other that are not part of path parameters i.e. after ?
+-  in the below code based on the value we provide in the url ex: skip 1 and limit 1 then 
+- return items [1:2] which gives {name: "Bar"}
+- all the quiey things are to be given along with = 
 
-# if we are declaring anything other that are not part of path parameters i.e. after ?
-# in the below code based on the value we provide in the url ex: skip 1 and limit 1 then 
-# return items [1:2] which gives {name: "Bar"}
-# all the quiey things are to be given along with = 
-
+```bash
 items = [{"name": "Foo"}, {"name": "Bar"}, {"name": "Com"}]
 
 @app.get("/items/")
@@ -84,11 +87,11 @@ async def read_item(term_id: str, q: str, short: bool = False): # if q is requir
             {"description": "This is an amazing item that has a long description"}
         )
     return item
+```
 
+### QUERY PARAMETERS 2
 
-# QUERY PARAMETERS 2
-
-
+```bash
 @app.get("/items/")
 async def read_items(q: str | None = None):
     results = {"items": [{"item_id": "Foo"}, {"item_id": "Bar"}]}
@@ -96,9 +99,10 @@ async def read_items(q: str | None = None):
     if q:
         results.update({"q": q})
     return results
+```
 
-
-# REQUEST BODY 
+### REQUEST BODY 
+```bash
 from pydantic import BaseModel
 
 class Item(BaseModel):
@@ -128,9 +132,9 @@ async def update_item(item_id: int, item: Item, q: str | None = None):
     if q:
         result.update({"q": q})
     return result        
-
-# QUERY PARAMETERS AND STRING VALIDATION
-
+```
+### QUERY PARAMETERS AND STRING VALIDATION
+```bash
 from typing import Annotated
 
 from fastapi import FastAPI, Query
@@ -160,7 +164,7 @@ async def read_items(q: Annotated[list[str] | None, Query()] = None):
 async def read_items(q: Annotated[str | None, Query(title="Query string", min_length=3)] = None,):        
     # can add title and description also
 
-# if i wnt my parameter like instead of q i need something like item_query then we need to put this in alias
+# if i want my parameter like instead of q i need something like item_query then we need to put this in alias
 # also if some one is using a parameter and it might be removed or updated in the future then u put it as depricated = True
 # under query or it can be parameter
     return {} 
@@ -175,9 +179,9 @@ async def read_items(
 
    return {} 
 
-
-# As we are validating the query parameters with many validations the same way we can validate the path parameters too
-
+```
+As we are validating the query parameters with many validations the same way we can validate the path parameters too
+```bash
 from fastapi import FastAPI, Path, Query
 
 @app.get("/items/{item_id}")
@@ -204,11 +208,11 @@ async def read_items(
     size: Annotated[float, Query(gt=0, lt=10.5)],
 ):
    return {}
+```
 
-
-# EXTRA FORBID 
-# pydantic model gives a feature of rejecting if user provides unnecessary query parameters
-
+### EXTRA FORBID 
+pydantic model gives a feature of rejecting if user provides unnecessary query parameters
+```bash
 from typing import Annotated, Literal
 
 
@@ -224,10 +228,11 @@ class FilterParams(BaseModel):
 @app.get("/items/")
 async def read_items(filter_query: Annotated[FilterParams, Query()]):
     return filter_query
+```
+### BODY MULTIPLE PARAMETERS.
+ means normalyy we only write one body but we can use many bodies    
 
-# BODY MULTIPLE PARAMETERS.
-# means normalyy we only write one body but we can use many bodies    
-
+```bash
 async def update_item(item_id: int, item: Annotated[Item, Body(embed=True)]):
 
     # here it will give normal json o/p only but with the parameter name also like item: { name......}
@@ -242,20 +247,23 @@ class Item(BaseModel):
     price: float = Field(gt=0, description="The price must be greater than zero")
     tax: float | None = None
 # here declaring in the body itself the conditions or oher validations
+```
 
-# BODY NESTED MODELS - defining attribute with subtype
- tags: list = [] # inside the class Item(basemodel)
+### BODY NESTED MODELS - defining attribute with subtype
+    tags: list = [] # inside the class Item(basemodel)
 
- # now if we want to mention the list type as string or int then 
+ now if we want to mention the list type as string or int then 
  from typing import List, Union
 
-tax: Union[float, None] = None
+    tax: Union[float, None] = None
+    
     tags: List[str] = []
 
-# SET TYPES:
-tags: set[str] = set()    # this is set of strings. ex if the tags have duplicate values it will consider as unique
+### SET TYPES:
+    tags: set[str] = set()    # this is set of strings. ex if the tags have duplicate values it will consider as unique
 
-# NESTED MODELS
+### NESTED MODELS
+```bash
 class Image(BaseModel):
     url: str
     name: str
@@ -289,11 +297,10 @@ async def create_multiple_images(images: list[Image]): # here image is a class
 
 
 async def create_index_weights(weights: dict[int, float]): # explain
+```
 
-
-# Declare request example data
-    1
-
+### Declare request example data
+```bash
 class Item(BaseModel):
     name: str
     description: str | None = None
@@ -316,55 +323,57 @@ class Item(BaseModel):
 # we can declare additional example inthe code 
  name: str = Field(examples=["Foo"])
 
+```
 
 
+### extra data types
+ not only the basic data types but can use different also
 
- # extra data types
- # not only the basic data types but can use different also
+- UUID: - Uniersity unique identifier
+- datetime.datetime: displays time in ISO 8601 format
+- datetime.date, datetime.time, datetime.timedelta
+- frozenset: treated as set in requests converts them if duplicate values to unique and list in response
+bytes:
+decimal:
 
- UUID: - Uniersity unique identifier
- datetime.datetime: displays time in ISO 8601 format
- datetime.date, datetime.time, datetime.timedelta
- frozenset: treated as set in requests converts them if duplicate values to unique and list in response
- bytes:
- decimal:
+from datetime import datetime, time, timedelta
 
- from datetime import datetime, time, timedelta
-
-item_id: UUID,
+    item_id: UUID,
     start_datetime: Annotated[datetime, Body()],
 
-# cookie 
+### cookie 
 from fastapi import cookie    
 async def read_items(ads_id: Annotated[str | None, Cookie()] = None):
 
-# header - main job is to tell fastapi to read specific value from request headers.
-# generally http variables have names with - where python cannot have variable names with - so if we use this
-# it will only convert the_ to the -. BDW it is also validation and conversion tool
+- header - main job is to tell fastapi to read specific value from request headers.
+- generally http variables have names with - where python cannot have variable names with - so if we use this
+- it will only convert the_ to the -. BDW it is also validation and conversion tool
 
 async def read_items(user_agent: Annotated[str | None, Header()] = None):
-    return {"User-Agent": user_agent}
-# if we dont want to convert the _ to - then
-async def read_items(
+return {"User-Agent": user_agent}
+
+### if we dont want to convert the _ to - then
+    async def read_items(
     strange_header: Annotated[str | None, Header(convert_underscores=False)] = None,
-):
+    ):
 
-# we can have duplicate headers i.e. one header can have different values
-async def read_items(x_token: Annotated[list[str] | None, Header()] = None):
+### we can have duplicate headers i.e. one header can have different values
+    async def read_items(x_token: Annotated[list[str] | None, Header()] = None):
 
-# cookie parameter model.
-# so declare all the values that are need as cookie parameters using pydantic model and can call them any no of times
+### cookie parameter model.
+so declare all the values that are need as cookie parameters using pydantic model and can call them any no of times
 
+```bash
 class Cookies(BaseModel):
-    session_id: str
-    fatebook_tracker: str | None = None
-    googall_tracker: str | None = None
+session_id: str
+fatebook_tracker: str | None = None
+googall_tracker: str | None = None
 
 
 @app.get("/items/")
 async def read_items(cookies: Annotated[Cookies, Cookie()]):
-    return cookies
+return cookies
 # the forbid can also be used here as above
 # the same way if you have group of header parameters can place them in the same pydantic model
-
+```
 

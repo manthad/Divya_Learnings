@@ -53,7 +53,7 @@ Answer: Use minimal base images (Alpine), don't run as "root" user, and scan for
 |docker build -t my-app .|"Builds the image from your Dockerfile and ""Tags"" it with a name."
 |docker run -p 8080:80 my-app|Starts the container and maps your laptop's port 8080 to the container's port 80.
 |docker ps|"Lists all currently running containers (The ""Check-up"")."
-|docker ps -a,"Shows all containers, including the ones that crashed or stopped."
+|docker ps -a|"Shows all containers, including the ones that crashed or stopped."
 |docker logs -f <id>|"Follows the output of your app. This is how you debug ""Why isn't my app starting?"""
 |docker exec -it <id> sh|Goes inside the running container. It's like SSHing into the container to look around.
 |docker images|"Lists all the ""Frozen"" images stored on your machine."
