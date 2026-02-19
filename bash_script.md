@@ -60,4 +60,9 @@ LINENO- retuns current line no inbash
 
 ### COMMAND SUBSTITUTION:  
 
+- If we want to store the output of a command in a variable then we can use command substitution
+  - CURRENT_DATE=$(date)
+  - echo $CURRENT_DATE => this will print the current date and time
 
+
+ 
