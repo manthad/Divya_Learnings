@@ -1,0 +1,112 @@
+```bash
+name: Deploy Docker to EC2
+on:
+  push:
+    branches:
+      - test
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: docker setup buildx  
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3 
+        with:
+          username: ${{ secrets.POLLAPP_USERNAME }} # docker username
+          password: ${{ secrets.POLLAPP_PASSWORD }} # docker pwd personal access token
+
+      - name: Docker build and push docker image
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64
+          # file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.POLLAPP_IMAGE}} # docker repo name
+    
+            
+  deploy:
+    runs-on: ubuntu-latest # or your self-hosted runner
+    needs: build-and-push
+
+  
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Copy docker-compose.yml to EC2
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "./"
+          target: "/home/${{ secrets.EC2_USER }}/pollapp"
+        
+
+      - name: SSH into EC2 and deploy
+        uses: appleboy/ssh-action@master
+        with: 
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }} 
+          script: |
+            # ls -la /home
+            # ls -la /home/ubuntu || true
+            # ls -la /home/ec2-user || true
+            cd /home/${{ secrets.EC2_USER }}/pollapp #|| cd /home/ec2-user/pollapp
+
+            
+            cat > .env <<EOF
+            DATABASE_NAME=${{ secrets.DATABASE_NAME }}
+            DATABASE_USERNAME=${{ secrets.DATABASE_USERNAME }}
+            DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+            DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+            DEBUG=0
+            DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }}
+            DATABASE_ENGINE=django.db.backends.postgresql
+            DATABASE_HOST=db
+            DATABASE_PORT=5432
+            EOF
+
+            sudo chown -R $USER:$USER /home/${{ secrets.EC2_USER }}/pollapp
+            sudo chmod -R 755 /home/${{ secrets.EC2_USER }}/pollapp
+           
+            sudo apt update
+            sudo apt install -y docker.io docker-compose
+            sudo systemctl start docker
+            sudo systemctl enable docker
+            
+            sudo docker-compose down || true
+            sudo docker-compose pull
+            cd /home/${{secrets.EC2_USER}}/pollapp
+            sudo docker-compose up -d --build#-f home/${{ secrets.EC2_USER }}/pollapp/docker-compose.yml 
+
+
+            docker-compose exec web python manage.py migrate #-f /home/ubuntu/pollapp/docker-compose.yml 
+            docker-compose exec web python manage.py collectstatic --noinput #-f /home/ubuntu/pollapp/docker-compose.yml 
+        
+
+            # sudo docker stop postgress-container || true
+            # sudo docker rm -f postgress-container || true
+            # sudo docker container prune -f
+            # sudo docker rmi manthad/postgress_pollappdb:v2 || true
+            # sudo docker pull manthad/postgress_pollappdb:v3
+
+
+            # sudo docker run -d --name postgress-container -p 8001:8000 --add-host=docker.internal:host-gateway manthad/postgress_pollappdb:v3
+            # -v /home/ubuntu/pollrestore/polldb_backup.sqlite3:/usr/src/app/db.sqlite3 manthad/postgress_pollappdb:v1
+
+
+            # sudo docker stop fastapi_container || true
+            # sudo docker rm fastapi_container || true
+            # sudo docker rmi manthad/fastapi-demo:latest || true
+            # sudo docker pull manthad/fastapi-demo:latest
+            # sudo docker run -d --name ec2-fastapi-container -p 8000:8000 manthad/fastapi-demo:latest
+```
+            

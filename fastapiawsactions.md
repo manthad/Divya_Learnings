@@ -1,0 +1,25 @@
+```bash
+name: Deploy Docker to EC2
+on:
+  push:
+    branches:
+      - test
+jobs:      
+  deploy:
+    runs-on: ubuntu-latest # or your self-hosted runner
+    # needs: build-and-push
+  
+    steps:
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            sudo docker stop fastapi_container || true
+            sudo docker rm fastapi_container || true
+            sudo docker rmi manthad/fastapi-demo:latest || true
+            sudo docker pull manthad/fastapi-demo:latest
+            sudo docker run -d --name ec2-fastapi-container -p 8000:8000 manthad/fastapi-demo:latest
+```            
