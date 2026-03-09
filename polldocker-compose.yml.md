@@ -1,3 +1,4 @@
+```bash
 services:
   db:
     image: postgres:15
@@ -33,3 +34,4 @@ services:
      - .env
 volumes:
   postgres_data:
+```  

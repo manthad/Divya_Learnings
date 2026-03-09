@@ -1,3 +1,4 @@
+```bash
 services:
   mysql:
     image: mysql:latest
@@ -25,3 +26,4 @@ services:
 
 volumes:   # add this section
   wordpress_data:    # does not need anything underneath this
+```  

@@ -76,4 +76,4 @@ sudo nginx -t
 sudo systemctl restart nginx
 ```
 
-
+Previous: [Bash Script](bash_script.md)                                   [Back to Table of Contents](index.md)

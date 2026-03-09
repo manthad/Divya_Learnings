@@ -1,4 +1,7 @@
 ## Terraform 
+    
+    brew install hashicorp/tap/terraform
+
  It is a tool to manage IAC (Infrastructure as a code). So we actually create ec2 instances, sg, vpc , subnets all of it right so these all can be created by 
     terraform.
 

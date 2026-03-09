@@ -65,4 +65,4 @@ LINENO- retuns current line no inbash
   - echo $CURRENT_DATE => this will print the current date and time
 
 
- 
+ Next: [Summary](summary_.md)               [Previous: [Interview Questions](interview.md)]                        Back:  [Table of Contents](index.md)
