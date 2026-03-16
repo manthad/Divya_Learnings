@@ -78,15 +78,15 @@ Using AWS by itself (clicking buttons) is called "ClickOps." It works for one pe
 ## 2. Access & Security, Keys and Groups: 
 
 - These are the "locks and keys" of the cloud.
-    - ***Key Pairs:*** A set of two keys (Public and Private) used to prove your identity when logging into a Linux server.
-- ***Security Groups:*** A Virtual Firewall. It controls traffic based on port numbers. (e.g., "Allow port 80 for web traffic, allow port 22 for SSH").
+    - *** Key Pairs:*** A set of two keys (Public and Private) used to prove your identity when logging into a Linux server.
+- *** Security Groups:*** A Virtual Firewall. It controls traffic based on port numbers. (e.g., "Allow port 80 for web traffic, allow port 22 for SSH").
 - Public vs. Private Keys:
-    - ***Public Key:*** Stored on the server. Think of it as the Lock. Anyone can see it.
-    - ***Private Key:*** Stored on your laptop (.pem or .ppk file). Think of it as the Physical Key. You never share this.
+    - *** Public Key:*** Stored on the server. Think of it as the Lock. Anyone can see it.
+    - *** Private Key:*** Stored on your laptop (.pem or .ppk file). Think of it as the Physical Key. You never share this.
 
 ## 3. SSH vs. Keys: The Difference
-- ***SSH (Secure Shell):*** This is the protocol (the "phone call") used to connect to a remote computer securely.
-- ***Public/Private Keys:*** This is the authentication method (the "password") used during that SSH call.
+- *** SSH (Secure Shell):*** This is the protocol (the "phone call") used to connect to a remote computer securely.
+- *** Public/Private Keys:*** This is the authentication method (the "password") used during that SSH call.
 - Instead of typing a password that can be guessed, SSH uses Asymmetric Encryption. The server uses your Public Key to "challenge" your computer, and only your Private Key can solve that challenge to let you in.
 
 ## 2. Ingress vs. Egress

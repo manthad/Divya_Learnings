@@ -62,7 +62,7 @@ This will create a new directory called djangoapp with the necessary files which
 - it is like a reusable module. 
 
 
-Now whatever the folder got created ex: djangoapp we may have many files in it but we need to only mention the djangoapp name in the ***settings.py*** file of the project to make it work. coz django only looks for the app name in the ***settings.py*** file to know which apps are there in the project and only runs them.
+Now whatever the folder got created ex: djangoapp we may have many files in it but we need to only mention the djangoapp name in the *** settings.py*** file of the project to make it work. coz django only looks for the app name in the *** settings.py*** file to know which apps are there in the project and only runs them.
     
 ```bash
 settings.py file

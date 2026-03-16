@@ -29,4 +29,6 @@ jobs:
             # sudo docker pull manthad/fastapi-demo:latest
             # sudo docker run -d --name ec2-fastapi-container -p 8000:8000 manthad/fastapi-demo:latest
 
-```        
+```      
+
+[]
