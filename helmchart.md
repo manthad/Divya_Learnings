@@ -15,11 +15,13 @@ helm create mychart
 This will create necessary files and folders automatically needed by helm chart same like django.
 
 Those are ***templates/ values.yaml, chart.yaml, etc.***
+
 Inside the templates folder, there are deployment.yaml, service.yaml, ingress.yaml, etc. which are the blueprints for the resources that will be created in the cluster.
 
 Now edit the values.yml file with the directory name of the project, also under service add the target and node ports
 
 Go to the templates folder and dev.yml adn check for the image notation
+
     image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
 
 This tells the "Brain" (Control Plane) to pull the name "testk8s" and the tag "latest" from your values file.
@@ -56,15 +58,19 @@ Now we can see the app running on localhost:8005 and we can test the endpoints.
 
 ## Stop the app
 
+```bash
+
     helm uninstall myrelease
-This removes the Deployment, the Service, and all associated Pods.
+# This removes the Deployment, the Service, and all associated Pods.
     
     helm upgrade myrelease ./fastapichart --set replicaCount=0
 
-Keep the Helm release active but stop the actual app from running (to save RAM/CPU), just tell Helm to hire zero workers:
+# Keep the Helm release active but stop the actual app from running (to save RAM/CPU), just tell Helm to hire zero workers:
 
     minikube stop
-The entire virtual cluster shuts down. All your Helm releases and Pods are "frozen" in time. When you run minikube start tomorrow, they will all wake up exactly where they left off.    
+
+# The entire virtual cluster shuts down. All your Helm releases and Pods are "frozen" in time. When you run minikube start tomorrow, they will all wake up exactly where they left off.    
+```
 
 
 | Action    |	Command |

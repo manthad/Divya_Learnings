@@ -24,6 +24,7 @@ resource "aws_instance" "my_server" {
 ami  = "ami-123456"
 instance_type = "t2.micro"
 }
+
 ```
 ### 3. Variables: (var.tf)  
 #### input.tfvars
@@ -375,3 +376,14 @@ terraform apply -var-file="dev.tfvars"
 ```
 
 Check for Video terraform in youtube if needed.
+
+
+## Giving and Taking Control:
+
+***Giving:*** letting the project use its own defaults
+    
+    Ex: You don't mention machine_type in your root main.tf. The module automatically builds the cluster using e2-medium because that is what’s written in its internal variables.tf.
+
+***Taking:*** overriding the defaults with your own values
+
+    Ex: You want to use a different machine type, so you add machine_type = "e2-small" in your root main.tf. This tells the module to ignore its default and use e2-small instead.    
