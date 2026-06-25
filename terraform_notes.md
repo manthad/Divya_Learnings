@@ -387,3 +387,5 @@ Check for Video terraform in youtube if needed.
 ***Taking:*** overriding the defaults with your own values
 
     Ex: You want to use a different machine type, so you add machine_type = "e2-small" in your root main.tf. This tells the module to ignore its default and use e2-small instead.    
+
+If we want to use a module without any changes then just call it and leave.
